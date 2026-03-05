@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Marketing Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0a0a0c;
+    --bg-secondary: #111114;
+    --bg-card: #16161a;
+    --bg-card-hover: #1c1c22;
+    --accent: #c8a55c;
+    --accent-light: #e0c77d;
+    --accent-dim: rgba(200, 165, 92, 0.12);
+    --text-primary: #e8e6e1;
+    --text-secondary: #9a9890;
+    --text-muted: #5c5b56;
+    --border: rgba(200, 165, 92, 0.1);
+    --border-strong: rgba(200, 165, 92, 0.25);
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  body.light-mode {
+    --bg-primary: #f5f3ef;
+    --bg-secondary: #eae7e1;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f9f8f6;
+    --accent: #a07c35;
+    --accent-light: #8a6a2a;
+    --accent-dim: rgba(160, 124, 53, 0.1);
+    --text-primary: #1a1a1e;
+    --text-secondary: #55534e;
+    --text-muted: #8a8880;
+    --border: rgba(160, 124, 53, 0.15);
+    --border-strong: rgba(160, 124, 53, 0.3);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    overflow-x: hidden;
+    transition: background 0.4s, color 0.4s;
+  }
+
+  ::selection { background: var(--accent); color: var(--bg-primary); }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ---- LIGHT MODE OVERRIDES ---- */
+  body.light-mode nav { background: rgba(245, 243, 239, 0.75); }
+  body.light-mode nav.scrolled { background: rgba(245, 243, 239, 0.95); }
+  body.light-mode .hero-glow { background: radial-gradient(circle, rgba(160,124,53,0.08) 0%, transparent 70%); }
+  body.light-mode .hero-bg-lines span { background: var(--accent); }
+  body.light-mode .hero-photo-frame::after { background: linear-gradient(to top, var(--bg-primary), transparent); }
+  body.light-mode .hero-photo-frame img { filter: grayscale(10%) contrast(1.02); }
+  body.light-mode .hero-photo-tag { background: var(--bg-primary); }
+  body.light-mode .exp-item .timeline-dot { background: var(--bg-secondary); }
+  body.light-mode .edu-item .timeline-dot { background: var(--bg-secondary); }
+  body.light-mode .client-card::before { background: radial-gradient(circle at 50% 0%, rgba(160,124,53,0.08) 0%, transparent 70%); }
+  body.light-mode ::selection { background: var(--accent); color: #fff; }
+  body.light-mode .result-card::before { background: linear-gradient(90deg, var(--accent), transparent); }
+  body.light-mode .video-card::before { background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+  body.light-mode .report-card::before { background: linear-gradient(90deg, var(--accent), transparent); }
+  body.light-mode .report-preview { background: #e8e5df; }
+  body.light-mode .mobile-video-link { background: #ddd8d0; }
+  body.light-mode .mobile-video-link .play-icon { background: rgba(160, 124, 53, 0.9); }
+  @media (max-width: 768px) {
+    body.light-mode .nav-links { background: rgba(245, 243, 239, 0.97); }
+  }
+
+  /* ---- THEME TOGGLE ---- */
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--border-strong);
+    color: var(--accent);
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    order: 2;
+  }
+  .theme-toggle:hover {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .theme-toggle svg { width: 18px; height: 18px; transition: transform 0.3s; }
+  .theme-toggle:hover svg { transform: rotate(20deg); }
+  .theme-toggle .icon-sun { display: none; }
+  body.light-mode .theme-toggle .icon-moon { display: none; }
+  body.light-mode .theme-toggle .icon-sun { display: block; }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.25rem 3rem;
+    display: flex; justify-content: space-between; align-items: center; gap: 1.5rem;
+    backdrop-filter: blur(20px);
+    background: rgba(10, 10, 12, 0.7);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.4s;
+  }
+  nav.scrolled { background: rgba(10, 10, 12, 0.92); }
+  .nav-logo { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--accent); text-decoration: none; letter-spacing: 0.02em; margin-right: auto; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; order: 1; }
+  .nav-links a {
+    text-decoration: none; color: var(--text-secondary); font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; position: relative;
+  }
+  .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--accent); transition: width 0.3s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+  .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; order: 3; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--text-primary); transition: all 0.3s; }
+
+  /* ---- HERO ---- */
+  .hero { min-height: 100vh; display: flex; align-items: center; padding: 8rem 3rem 4rem; position: relative; overflow: hidden; }
+  .hero-bg-lines { position: absolute; inset: 0; overflow: hidden; opacity: 0.04; }
+  .hero-bg-lines span { position: absolute; background: var(--accent); }
+  .hero-bg-lines span:nth-child(1) { width: 1px; height: 100%; left: 20%; }
+  .hero-bg-lines span:nth-child(2) { width: 1px; height: 100%; left: 50%; }
+  .hero-bg-lines span:nth-child(3) { width: 1px; height: 100%; left: 80%; }
+  .hero-bg-lines span:nth-child(4) { width: 100%; height: 1px; top: 30%; }
+  .hero-bg-lines span:nth-child(5) { width: 100%; height: 1px; top: 70%; }
+  .hero-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(200,165,92,0.06) 0%, transparent 70%); top: -100px; right: -100px; pointer-events: none; }
+
+  .hero-inner {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-content { flex: 1; min-width: 0; }
+
+  .hero-photo {
+    flex: 0 0 340px;
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+
+  .hero-photo-frame {
+    position: relative;
+    width: 340px;
+    height: 420px;
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+  }
+
+  .hero-photo-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(200,165,92,0.08);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .hero-photo-frame::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(to top, var(--bg-primary), transparent);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .hero-photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    filter: grayscale(15%) contrast(1.05);
+    transition: filter 0.5s;
+  }
+
+  .hero-photo-frame:hover img {
+    filter: grayscale(0%) contrast(1.08);
+  }
+
+  .hero-photo-accent {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--accent);
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .hero-photo-tag {
+    position: absolute;
+    bottom: 16px;
+    left: 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-strong);
+    padding: 0.5rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    z-index: 3;
+  }
+
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.15s forwards;
+  }
+
+  .hero-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
+  .hero-title { font-family: var(--font-display); font-size: clamp(2.8rem, 5.5vw, 4.8rem); font-weight: 900; line-height: 1.08; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
+  .hero-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .hero-sub { font-size: 1.15rem; color: var(--text-secondary); max-width: 600px; line-height: 1.8; margin-bottom: 2.5rem; opacity: 0; animation: fadeUp 0.8s 0.6s forwards; }
+  .hero-cta-row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s 0.8s forwards; }
+  .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.85rem 2rem; background: var(--accent); color: var(--bg-primary); font-family: var(--font-body); font-weight: 600; font-size: 0.88rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: all 0.3s; }
+  .btn-primary:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200,165,92,0.2); }
+  .btn-outline { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.85rem 2rem; background: transparent; color: var(--text-primary); font-family: var(--font-body); font-weight: 500; font-size: 0.88rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--border-strong); cursor: pointer; transition: all 0.3s; }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* ---- SECTIONS (global) ---- */
+  section { padding: 6rem 3rem; position: relative; transition: background 0.4s; }
+  .section-header { margin-bottom: 4rem; text-align: center; }
+  .section-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 0.75rem; }
+  .section-title { font-family: var(--font-display); font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 700; line-height: 1.15; }
+  .section-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .section-divider { width: 60px; height: 2px; background: var(--accent); margin: 1.5rem auto 0; }
+
+  /* ---- ABOUT ---- */
+  #about { background: var(--bg-secondary); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1100px; margin: 0 auto; }
+  .about-text p { color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 1.02rem; }
+
+  /* Education timeline */
+  .edu-list { list-style: none; position: relative; padding-left: 2px; }
+  .edu-list .timeline-track { position: absolute; top: 0; left: 0; width: 2px; height: 100%; background: var(--border); }
+  .edu-list .timeline-progress { position: absolute; top: 0; left: 0; width: 2px; height: 0%; background: var(--accent); will-change: height; z-index: 1; }
+  .edu-list .timeline-progress::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 14px 4px rgba(200,165,92,0.5); }
+  .edu-item { padding: 1.5rem 1.5rem 1.5rem 1.5rem; margin-bottom: 1.5rem; position: relative; }
+  .edu-item .timeline-dot { width: 10px; height: 10px; border: 2px solid var(--border); background: var(--bg-secondary); border-radius: 50%; position: absolute; left: -6px; top: 1.75rem; z-index: 2; transition: border-color 0.4s, background 0.4s, box-shadow 0.4s; }
+  .edu-item.reached .timeline-dot { border-color: var(--accent); background: var(--accent); box-shadow: 0 0 10px rgba(200,165,92,0.4); }
+  .edu-degree { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .edu-school { font-size: 0.9rem; color: var(--accent); margin-bottom: 0.3rem; }
+  .edu-meta { font-size: 0.82rem; color: var(--text-muted); }
+  .edu-badge { display: inline-block; margin-top: 0.5rem; padding: 0.2rem 0.65rem; background: var(--accent-dim); color: var(--accent); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* ---- EXPERIENCE ---- */
+  .exp-timeline { max-width: 900px; position: relative; padding-left: 1px; margin: 0 auto; }
+  .exp-timeline .timeline-track { position: absolute; top: 0; left: 0; width: 2px; height: 100%; background: var(--border); }
+  .exp-timeline .timeline-progress { position: absolute; top: 0; left: 0; width: 2px; height: 0%; background: var(--accent); will-change: height; z-index: 1; }
+  .exp-timeline .timeline-progress::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 14px 4px rgba(200,165,92,0.5); }
+  .exp-item { padding: 2rem 2rem 2rem 2.5rem; position: relative; margin-bottom: 0; }
+  .exp-item .timeline-dot { width: 12px; height: 12px; border: 2px solid var(--border); border-radius: 50%; background: var(--bg-primary); position: absolute; left: -6px; top: 2.2rem; z-index: 2; transition: border-color 0.4s, background 0.4s, box-shadow 0.4s; }
+  .exp-item.reached .timeline-dot { border-color: var(--accent); background: var(--accent); box-shadow: 0 0 12px rgba(200,165,92,0.4); }
+  .exp-date { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .exp-role { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .exp-company { font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 1rem; }
+  .exp-highlights { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .exp-highlights li { font-size: 0.92rem; color: var(--text-secondary); padding-left: 1.25rem; position: relative; line-height: 1.6; }
+  .exp-highlights li::before { content: ''; width: 4px; height: 4px; background: var(--accent); border-radius: 50%; position: absolute; left: 0; top: 0.6rem; }
+
+  /* ---- CLIENTS ---- */
+  #clients { background: var(--bg-secondary); }
+  .clients-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+  .client-card { padding: 2.25rem 2rem; background: var(--bg-card); border: 1px solid var(--border); text-align: center; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  .client-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(200,165,92,0.06) 0%, transparent 70%); opacity: 0; transition: opacity 0.4s; }
+  .client-card:hover { border-color: var(--border-strong); transform: translateY(-5px); box-shadow: 0 16px 45px rgba(0,0,0,0.3); }
+  .client-card:hover::before { opacity: 1; }
+  .client-icon { width: 52px; height: 52px; margin: 0 auto 1.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-strong); border-radius: 50%; color: var(--accent); transition: all 0.3s; }
+  .client-icon svg { width: 24px; height: 24px; }
+  .client-card:hover .client-icon { background: var(--accent-dim); border-color: var(--accent); box-shadow: 0 0 16px rgba(200,165,92,0.15); }
+  .client-type { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.35; }
+  .client-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.55; }
+
+  /* ---- RESULTS ---- */
+  #results { background: var(--bg-secondary); }
+  .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .result-card { padding: 2rem; background: var(--bg-card); border: 1px solid var(--border); transition: all 0.4s; position: relative; overflow: hidden; text-align: center; }
+  .result-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); opacity: 0; transition: opacity 0.4s; }
+  .result-card:hover { border-color: var(--border-strong); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+  .result-card:hover::before { opacity: 1; }
+  .result-number { font-family: var(--font-display); font-size: 2.5rem; font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: 0.5rem; }
+  .result-label { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.35rem; }
+  .result-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+  /* ---- PORTFOLIO / VIDEO ---- */
+  #portfolio { background: var(--bg-primary); }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.75rem; max-width: 1100px; margin: 0 auto; }
+  .video-card { position: relative; background: var(--bg-card); border: 1px solid var(--border); overflow: hidden; transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  .video-card:hover { border-color: var(--border-strong); transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(200,165,92,0.1); }
+  .video-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0; transition: opacity 0.4s; z-index: 2; pointer-events: none; }
+  .video-card:hover::before { opacity: 1; }
+  .video-wrapper { position: relative; width: 100%; padding-top: 56.25%; background: #000; overflow: hidden; z-index: 3; }
+  .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+  .video-info { padding: 1.15rem 1.35rem; display: flex; justify-content: center; align-items: center; gap: 0.75rem; }
+  .video-title { font-weight: 600; font-size: 0.9rem; color: var(--text-primary); }
+  .video-tag { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); padding: 0.3rem 0.65rem; background: var(--accent-dim); white-space: nowrap; }
+  .video-views { display: inline-flex; align-items: center; gap: 0.35rem; font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.05em; }
+  .video-views svg { width: 12px; height: 12px; }
+  .video-wrapper-ig { padding-top: 100%; }
+
+  /* ---- REPORTS ---- */
+  #reports { background: var(--bg-secondary); }
+  .reports-intro { text-align: center; max-width: 650px; margin: -2rem auto 3rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; }
+  .reports-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .report-card { background: var(--bg-card); border: 1px solid var(--border); overflow: hidden; position: relative; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  .report-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); opacity: 0; transition: opacity 0.4s; z-index: 2; pointer-events: none; }
+  .report-card:hover { border-color: var(--border-strong); transform: translateY(-5px); box-shadow: 0 16px 45px rgba(0,0,0,0.35); }
+  .report-card:hover::before { opacity: 1; }
+  .report-preview { width: 100%; height: 220px; background: #0d0d10; position: relative; overflow: hidden; border-bottom: 1px solid var(--border); z-index: 3; }
+  .report-preview iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+  .report-body { padding: 1.35rem 1.5rem; text-align: center; }
+  .report-badge { display: inline-block; margin-bottom: 0.75rem; padding: 0.2rem 0.65rem; background: var(--accent-dim); color: var(--accent); font-family: var(--font-mono); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .report-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem; line-height: 1.4; }
+  .report-meta { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem; }
+  .report-link { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 600; color: var(--accent); text-decoration: none; text-transform: uppercase; letter-spacing: 0.08em; transition: all 0.3s; padding: 0.45rem 1.1rem; border: 1px solid var(--border-strong); }
+  .report-link:hover { background: var(--accent); color: var(--bg-primary); border-color: var(--accent); }
+  .report-link svg { width: 14px; height: 14px; }
+
+  /* ---- SKILLS ---- */
+  .skills-container { max-width: 1100px; margin: 0 auto; }
+  .skills-group { margin-bottom: 3rem; }
+  .skills-group-title { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); text-align: center; }
+  .skills-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
+  .skill-tag { padding: 0.5rem 1rem; background: var(--bg-card); border: 1px solid var(--border); font-size: 0.84rem; color: var(--text-secondary); transition: all 0.3s; cursor: default; }
+  .skill-tag:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+  .languages-row { display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; justify-content: center; }
+  .lang-card { padding: 1.5rem 2rem; border: 1px solid var(--border); background: var(--bg-card); flex: 1; min-width: 200px; transition: all 0.3s; text-align: center; }
+  .lang-card:hover { border-color: var(--accent); }
+  .lang-name { font-weight: 600; font-size: 1rem; margin-bottom: 0.25rem; }
+  .lang-level { font-size: 0.82rem; color: var(--text-muted); }
+  .lang-level .highlight { color: var(--accent); font-weight: 600; }
+
+  /* ---- AWARDS ---- */
+  #awards { background: var(--bg-secondary); }
+  .awards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 800px; margin: 0 auto; }
+  .award-card { padding: 2rem; border: 1px solid var(--border); background: var(--bg-card); position: relative; transition: all 0.3s; text-align: center; }
+  .award-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .award-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+  .award-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .award-org { font-size: 0.88rem; color: var(--accent); margin-bottom: 0.2rem; }
+  .award-year { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+
+  /* ---- CONTACT ---- */
+  #contact { background: var(--bg-primary); text-align: center; }
+  .contact-inner { max-width: 700px; margin: 0 auto; }
+  .contact-text { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 2.5rem; }
+  .contact-channels { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+  .contact-item {
+    display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+    padding: 1.75rem 2rem; background: var(--bg-card); border: 1px solid var(--border);
+    text-decoration: none; transition: all 0.4s; flex: 1; min-width: 180px;
+  }
+  .contact-item:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 35px rgba(0,0,0,0.3); }
+  .contact-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+  .contact-icon svg { width: 28px; height: 28px; color: var(--accent); transition: transform 0.3s; }
+  .contact-item:hover .contact-icon svg { transform: scale(1.15); }
+  .contact-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.15em; text-transform: uppercase; }
+  .contact-value { font-size: 0.88rem; font-weight: 600; color: var(--text-primary); transition: color 0.3s; }
+  .contact-item:hover .contact-value { color: var(--accent); }
+
+  footer { padding: 2rem 3rem; text-align: center; font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border); }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 768px) {
+    body::before { display: none; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(10, 10, 12, 0.96); flex-direction: column; padding: 1.5rem; gap: 1rem; border-bottom: 1px solid var(--border); }
+    .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .hero-inner { flex-direction: column; gap: 2.5rem; }
+    .hero-photo { flex: 0 0 auto; order: -1; }
+    .hero-photo-frame { width: 220px; height: 275px; margin: 0 auto; }
+    .hero-photo-accent { top: -8px; right: -8px; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid, .awards-grid, .results-grid, .clients-grid, .portfolio-grid, .reports-grid { grid-template-columns: 1fr; }
+    .about-grid { gap: 2.5rem; }
+    .hero-cta-row { flex-direction: column; align-items: flex-start; }
+
+    /* Video cards: strip transforms, overflow, z-index, and pseudo-elements */
+    .video-card,
+    .video-card:hover { overflow: visible; transform: none !important; box-shadow: none; }
+    .video-card::before { display: none; }
+    .video-wrapper { overflow: visible; z-index: auto; }
+    .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+    /* Mobile video placeholder (replaces iframe) */
+    .mobile-video-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      inset: 0;
+      background: #0d0d10;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .mobile-video-link::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      pointer-events: none;
+    }
+    .mobile-video-link .play-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(200, 165, 92, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s, background 0.3s;
+      z-index: 1;
+    }
+    .mobile-video-link:active .play-icon {
+      transform: scale(0.92);
+      background: rgba(200, 165, 92, 1);
+    }
+    .mobile-video-link .play-icon svg {
+      width: 28px;
+      height: 28px;
+      color: #0a0a0c;
+      margin-left: 3px;
+    }
+    .mobile-video-link .tap-label {
+      position: absolute;
+      bottom: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      z-index: 1;
+    }
+
+    /* Report cards: same treatment */
+    .report-card,
+    .report-card:hover { overflow: visible; transform: none !important; box-shadow: none; }
+    .report-card::before { display: none; }
+    .report-preview { overflow: visible; z-index: auto; }
+
+    /* Reveal animation: don't use transform on cards containing iframes */
+    .video-card.reveal.visible,
+    .report-card.reveal.visible { transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#" class="nav-logo">Hendi Nur Pratama</a>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+  <button class="hamburger" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#clients">Clients</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#portfolio">Video Work</a></li>
+    <li><a href="#reports">Consulting Reports</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#awards">Recognition</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-lines"><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <p class="hero-name">Hendi Nur Pratama</p>
+      <p class="hero-label">Digital Marketing &amp; Growth</p>
+      <h1 class="hero-title">Data-driven marketer<br>with a <em>creative edge</em></h1>
+      <p class="hero-sub">Hands-on experience across social media, search, CRM, and AI-assisted content production. Balancing analytical precision with bold, human creativity to drive real results.</p>
+      <div class="hero-cta-row">
+        <a href="#portfolio" class="btn-primary">View My Work &darr;</a>
+        <a href="#contact" class="btn-outline">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <div class="hero-photo-frame">
+        <img src="https://drive.google.com/thumbnail?id=1qLR4edrX1fO8iyJ9JSl5xtY8Lj_Fk6ja&sz=w800" alt="Hendi Nur Pratama">
+      </div>
+      <div class="hero-photo-accent"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header reveal">
+    <p class="section-label">01 / About</p>
+    <h2 class="section-title">Marketing strategist,<br><em>storyteller</em>, builder</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I am a data-driven digital marketer with a Master of Management (Marketing) from The University of Melbourne and a strong track record of turning insights into impact. From scaling social media channels and producing viral content to managing CRM campaigns and performance advertising, I bring both analytical rigour and creative instinct to every project.</p>
+      <p>My career spans academic publishing, social media content creation, and growth consulting for clients ranging from multinational enterprises to cross-border law firms. Whether optimising Meta Ads, leveraging cutting-edge AI tools for content, or building brand strategies from scratch, I focus on measurable outcomes and authentic storytelling.</p>
+    </div>
+    <div class="reveal">
+      <ul class="edu-list" data-timeline>
+        <div class="timeline-track"></div>
+        <div class="timeline-progress"></div>
+        <li class="edu-item"><span class="timeline-dot"></span>
+          <p class="edu-degree">Master of Management (Marketing)</p>
+          <p class="edu-school">The University of Melbourne</p>
+          <p class="edu-meta">GPA 3.72</p>
+          <span class="edu-badge">First Class Honours in Most Core Subjects</span>
+        </li>
+        <li class="edu-item"><span class="timeline-dot"></span>
+          <p class="edu-degree">Bachelor of Education, English</p>
+          <p class="edu-school">University of Lampung</p>
+          <p class="edu-meta">GPA 3.72</p>
+          <span class="edu-badge">Valedictorian (among 800+ graduates)</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section id="clients">
+  <div class="section-header reveal">
+    <p class="section-label">02 / Clients</p>
+    <h2 class="section-title">Who I've <em>worked</em> with</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="clients-grid">
+    <div class="client-card reveal">
+      <div class="client-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12a4 4 0 004 4"/><path d="M16 12a4 4 0 00-4-4"/><path d="M12 8v-2m0 12v-2m4-4h2M6 12H4"/><path d="M9 9L7.5 7.5M15 15l1.5 1.5M15 9l1.5-1.5M9 15l-1.5 1.5"/></svg></div>
+      <p class="client-type">Multinational Social Enterprise</p>
+      <p class="client-desc">Strategic marketing and content support driving social impact at scale across global markets</p>
+    </div>
+    <div class="client-card reveal">
+      <div class="client-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M4 7l8-4 8 4M4 7l2 8h-2a2 2 0 002 2h0a2 2 0 002-2H6L4 7zM20 7l-2 8h2a2 2 0 01-2 2h0a2 2 0 01-2-2h2l2-8z"/></svg></div>
+      <p class="client-type">Cross-border Law Firm</p>
+      <p class="client-desc">Digital marketing for an Australia and Indonesia practice, bridging two markets with targeted campaigns</p>
+    </div>
+    <div class="client-card reveal">
+      <div class="client-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M4 20V9l8-5 8 5v11"/><path d="M9 20v-5h6v5M9 12h.01M15 12h.01M12 9h.01"/></svg></div>
+      <p class="client-type">Australia-based Finance Provider</p>
+      <p class="client-desc">Performance advertising and lead generation supporting deals valued at AU$50M+</p>
+    </div>
+    <div class="client-card reveal">
+      <div class="client-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <p class="client-type">High-profile Digital PR</p>
+      <p class="client-desc">Reputation management and content strategy for professionals navigating sensitive public situations</p>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="section-header reveal">
+    <p class="section-label">03 / Results</p>
+    <h2 class="section-title">Numbers that<br><em>speak</em> for themselves</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="results-grid">
+    <div class="result-card reveal"><p class="result-number" data-count="611.7" data-suffix="K" data-decimals="1">0K</p><p class="result-label">Interactions on Instagram</p><p class="result-desc">Achieved in one month period with viral short-form content</p></div>
+    <div class="result-card reveal"><p class="result-number" data-count="4.7" data-suffix="M" data-decimals="1">0M</p><p class="result-label">Top Reel Views</p><p class="result-desc">Single piece of content reaching millions organically</p></div>
+    <div class="result-card reveal"><p class="result-number" data-count="96.91" data-suffix="%" data-decimals="2">0%</p><p class="result-label">Above Median</p><p class="result-desc">UniMelb content outperforming 30-day reel benchmarks</p></div>
+    <div class="result-card reveal"><p class="result-number" data-count="100" data-suffix="%+">0%+</p><p class="result-label">Revenue Growth</p><p class="result-desc">Goodwood Publishing through strategic marketing initiatives</p></div>
+    <div class="result-card reveal"><p class="result-number" data-count="50" data-prefix="AU$" data-suffix="M+">AU$0M+</p><p class="result-label">Deals Influenced</p><p class="result-desc">Data-driven marketing initiatives influencing high-value deals valued at AU$50M+</p></div>
+    <div class="result-card reveal"><p class="result-number" data-count="21.5" data-suffix="K" data-decimals="1">0K</p><p class="result-label">Followers Gained</p><p class="result-desc">Across Instagram and TikTok through performance optimisation</p></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header reveal">
+    <p class="section-label">04 / Experience</p>
+    <h2 class="section-title">Where strategy<br>meets <em>execution</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="exp-timeline" data-timeline>
+    <div class="timeline-track"></div>
+    <div class="timeline-progress"></div>
+    <div class="exp-item reveal"><span class="timeline-dot"></span>
+      <p class="exp-date">Feb 2024 &mdash; Present</p>
+      <h3 class="exp-role">Digital Marketing & Growth Consultant</h3>
+      <p class="exp-company">Independent Contractor / Freelance</p>
+      <ul class="exp-highlights">
+        <li>Delivered marketing and content support for a multinational social enterprise, cross-border law firm (Australia and Indonesia), an Australian finance provider, and high-profile digital PR clients.</li>
+        <li>Led data-driven marketing initiatives influencing deals valued at AU$50M+.</li>
+        <li>Achieved 7M views and 611.7K interactions on Instagram in a single month; top Reel reached 4.7M views.</li>
+        <li>Scaled personal branding channels by +21.5K followers through structured experimentation and performance-led optimisation.</li>
+        <li>Managed Meta Ads and SEO to increase conversions and reduce cost-per-lead; orchestrated cross-channel campaigns across social, email, CRM, and search.</li>
+        <li>Produced short-form videos using AI tools (Kling AI, Sora, Heygen, ElevenLabs, and more), Premiere Pro, CapCut, Photoshop, and Canva.</li>
+      </ul>
+    </div>
+    <div class="exp-item reveal"><span class="timeline-dot"></span>
+      <p class="exp-date">Jun 2024 &mdash; Dec 2024</p>
+      <h3 class="exp-role">Social Media Content Creator</h3>
+      <p class="exp-company">The University of Melbourne (Contract)</p>
+      <ul class="exp-highlights">
+        <li>Produced content outperforming the 30-day median reels by 96.91%.</li>
+        <li>Ideated, filmed, and edited short videos for university social channels.</li>
+      </ul>
+    </div>
+    <div class="exp-item reveal"><span class="timeline-dot"></span>
+      <p class="exp-date">Jul 2023 &mdash; Oct 2023</p>
+      <h3 class="exp-role">Marketing Intern</h3>
+      <p class="exp-company">iGroup Australasia, Melbourne</p>
+      <ul class="exp-highlights">
+        <li>Integrated Mailchimp for targeted outreach: sent volume up 49%, open rate up 33%, click rate up 77%, unsubscribes down 10% vs prior 3 months.</li>
+        <li>Conducted market research and identified target audiences for new channel expansion.</li>
+      </ul>
+    </div>
+    <div class="exp-item reveal"><span class="timeline-dot"></span>
+      <p class="exp-date">Oct 2019 &mdash; Jul 2022</p>
+      <h3 class="exp-role">Manager of Academic Journal Division</h3>
+      <p class="exp-company">Goodwood Publishing, Bandar Lampung, Indonesia</p>
+      <ul class="exp-highlights">
+        <li>Developed strategies delivering over 100% revenue growth through increased publications, events, and partnerships with 145+ institutions across 30 countries.</li>
+        <li>Managed campaign coordination, prospecting, tracking, and reporting for scholarly journals and conferences.</li>
+        <li>Developed stakeholder communication plans and collaborated with editorial boards and reviewers for quality control.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="section-header reveal">
+    <p class="section-label">05 / Video Work</p>
+    <h2 class="section-title">Some Videos <em>I Made</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="portfolio-grid">
+    <div class="video-card reveal">
+      <div class="video-wrapper"><iframe src="https://drive.google.com/file/d/16Pza90rgDwCBXeBViDuKsYHZqUBvXtV8/preview" allow="autoplay; encrypted-media; fullscreen" allowfullscreen loading="lazy"></iframe></div>
+      <div class="video-info"><span class="video-title">A Story of Nadiem Makarim and Gojek (Unpaid)</span><span class="video-tag">Short-form</span></div>
+    </div>
+    <div class="video-card reveal">
+      <div class="video-wrapper"><iframe src="https://drive.google.com/file/d/1mkZDWrxA_sbj0jjq5h6n34I8WacudNsH/preview" allow="autoplay; encrypted-media; fullscreen" allowfullscreen loading="lazy"></iframe></div>
+      <div class="video-info"><span class="video-title">An MV about Trees as Guardians of Humans (Unpaid)</span><span class="video-tag">Short-form</span></div>
+    </div>
+    <div class="video-card reveal">
+      <div class="video-wrapper"><iframe src="https://drive.google.com/file/d/11DoODUsPMqN0IOSxH-3Y7t3G1wzFi9ya/preview" allow="autoplay; encrypted-media; fullscreen" allowfullscreen loading="lazy"></iframe></div>
+      <div class="video-info"><span class="video-title">Deinfluence Skincare Edition (Paid)</span><span class="video-tag">Short-form</span></div>
+    </div>
+    <div class="video-card reveal">
+      <div class="video-wrapper"><iframe src="https://drive.google.com/file/d/1sQGrA8DM-Xr_TiinQLGbUMfR6-4ggwU4/preview" allow="autoplay; encrypted-media; fullscreen" allowfullscreen loading="lazy"></iframe></div>
+      <div class="video-info"><span class="video-title">Milestones (Paid)</span><span class="video-tag">Short-form</span></div>
+    </div>
+    <div class="video-card reveal">
+      <div class="video-wrapper"><iframe src="https://drive.google.com/file/d/18WpD7io28xKmouG6Rk5IKRNI0J3MVLQ1/preview" allow="autoplay; encrypted-media; fullscreen" allowfullscreen loading="lazy"></iframe></div>
+      <div class="video-info"><span class="video-title">Guru Honorer (Unpaid)</span><span class="video-tag">Short-form</span></div>
+    </div>
+    <div class="video-card reveal">
+      <div class="video-wrapper"><iframe src="https://drive.google.com/file/d/13Jkt76atkPiECtsRY3bU5Ik38VYge9IQ/preview" allow="autoplay; encrypted-media; fullscreen" allowfullscreen loading="lazy"></iframe></div>
+      <div class="video-info"><span class="video-title">Wanggongchang Explosion (Unpaid)</span><span class="video-tag">Short-form</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- REPORTS -->
+<section id="reports">
+  <div class="section-header reveal">
+    <p class="section-label">06 / Consulting Reports</p>
+    <h2 class="section-title">Academic work,<br><em>consulting</em> calibre</h2>
+    <div class="section-divider"></div>
+  </div>
+  <p class="reports-intro reveal">Selected reports from my Master of Management (Marketing) at the University of Melbourne. All achieved First Class Honours, the highest grade bracket.</p>
+  <div class="reports-grid">
+
+    <div class="report-card reveal">
+      <div class="report-preview"><iframe src="https://drive.google.com/file/d/1n4fYEREGFS5hQ7qoUyMtOXzzNMEb8w50/preview" loading="lazy"></iframe></div>
+      <div class="report-body">
+        <span class="report-badge">First Class Honours</span>
+        <p class="report-title">Marketing Research Report</p>
+        <p class="report-meta">Marketing Research &middot; UniMelb</p>
+        <a href="https://drive.google.com/file/d/1n4fYEREGFS5hQ7qoUyMtOXzzNMEb8w50/view?usp=drive_link" target="_blank" class="report-link">View Full Report <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+    </div>
+
+    <div class="report-card reveal">
+      <div class="report-preview"><iframe src="https://drive.google.com/file/d/1yHNJjtGzpylUFMzubw-cS566S1OULCI0/preview" loading="lazy"></iframe></div>
+      <div class="report-body">
+        <span class="report-badge">First Class Honours</span>
+        <p class="report-title">Revitalizing a Stagnant Growth</p>
+        <p class="report-meta">Consumer and Consumption &middot; UniMelb</p>
+        <a href="https://drive.google.com/file/d/1yHNJjtGzpylUFMzubw-cS566S1OULCI0/view?usp=drive_link" target="_blank" class="report-link">View Full Report <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+    </div>
+
+    <div class="report-card reveal">
+      <div class="report-preview"><iframe src="https://drive.google.com/file/d/1jQwL9breVzdT1nTQbpKIiCpLcOfrDFb6/preview" loading="lazy"></iframe></div>
+      <div class="report-body">
+        <span class="report-badge">First Class Honours</span>
+        <p class="report-title">Consulting Project Proposal</p>
+        <p class="report-meta">Business Practicum &middot; UniMelb</p>
+        <a href="https://drive.google.com/file/d/1jQwL9breVzdT1nTQbpKIiCpLcOfrDFb6/view?usp=drive_link" target="_blank" class="report-link">View Full Report <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+    </div>
+
+    <div class="report-card reveal">
+      <div class="report-preview"><iframe src="https://drive.google.com/file/d/1ljbEeVPfE-sy9Q6tXJn4Mair_QhB7V-L/preview" loading="lazy"></iframe></div>
+      <div class="report-body">
+        <span class="report-badge">First Class Honours</span>
+        <p class="report-title">Marketing Plan</p>
+        <p class="report-meta">Marketing Strategy &middot; UniMelb</p>
+        <a href="https://drive.google.com/file/d/1ljbEeVPfE-sy9Q6tXJn4Mair_QhB7V-L/view?usp=drive_link" target="_blank" class="report-link">View Full Report <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+    </div>
+
+    <div class="report-card reveal">
+      <div class="report-preview"><iframe src="https://drive.google.com/file/d/1vesoWAgASmYUv8OXfo97nxA_tevsAEbZ/preview" loading="lazy"></iframe></div>
+      <div class="report-body">
+        <span class="report-badge">First Class Honours</span>
+        <p class="report-title">Sustainable Marketing Strategy</p>
+        <p class="report-meta">Marketing, Society, and Sustainability &middot; UniMelb</p>
+        <a href="https://drive.google.com/file/d/1vesoWAgASmYUv8OXfo97nxA_tevsAEbZ/view?usp=drive_link" target="_blank" class="report-link">View Full Report <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+    </div>
+
+    <div class="report-card reveal">
+      <div class="report-preview"><iframe src="https://drive.google.com/file/d/12ANplpnzbokrYtQw_8e3PWX8Qcbt0N7a/preview" loading="lazy"></iframe></div>
+      <div class="report-body">
+        <span class="report-badge">First Class Honours</span>
+        <p class="report-title">Business Case Analysis</p>
+        <p class="report-meta">Accounting for Decision Making &middot; UniMelb</p>
+        <a href="https://drive.google.com/file/d/12ANplpnzbokrYtQw_8e3PWX8Qcbt0N7a/view?usp=drive_link" target="_blank" class="report-link">View Full Report <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header reveal">
+    <p class="section-label">07 / Skills</p>
+    <h2 class="section-title">The <em>toolkit</em><br>behind the work</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="skills-container">
+    <div class="skills-group reveal">
+      <p class="skills-group-title">Strategy & Marketing</p>
+      <div class="skills-tags">
+        <span class="skill-tag">Consumer & Trend Research</span><span class="skill-tag">Brand & Go-to-Market</span>
+        <span class="skill-tag">Social Media Marketing</span><span class="skill-tag">Content Creation</span>
+        <span class="skill-tag">Meta Ads</span><span class="skill-tag">SEO (On-page & Technical)</span>
+        <span class="skill-tag">Marketing Analytics</span><span class="skill-tag">CRM</span><span class="skill-tag">Mailchimp</span>
+      </div>
+    </div>
+    <div class="skills-group reveal">
+      <p class="skills-group-title">Design & Video</p>
+      <div class="skills-tags">
+        <span class="skill-tag">Adobe Premiere Pro</span><span class="skill-tag">CapCut</span>
+        <span class="skill-tag">Photoshop</span><span class="skill-tag">Canva</span>
+      </div>
+    </div>
+    <div class="skills-group reveal">
+      <p class="skills-group-title">AI Content Tools</p>
+      <div class="skills-tags">
+        <span class="skill-tag">Higgsfield</span><span class="skill-tag">Nano Banana Pro</span>
+        <span class="skill-tag">Kling AI</span><span class="skill-tag">Google VEO 3.1</span>
+        <span class="skill-tag">Sora</span><span class="skill-tag">Heygen</span>
+        <span class="skill-tag">ElevenLabs</span><span class="skill-tag">Google Text to Speech</span>
+        <span class="skill-tag">Suno AI</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="section-header reveal">
+    <p class="section-label">08 / Recognition</p>
+    <h2 class="section-title">Awards &<br><em>achievements</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="awards-grid">
+    <div class="award-card reveal"><p class="award-title">National Finalist, Brandstorm</p><p class="award-org">L'Oreal ANZ Business Case Competition</p><p class="award-year">April 2024</p></div>
+    <div class="award-card reveal"><p class="award-title">Fully Funded Master's Scholarship</p><p class="award-org">LPDP (Indonesia Endowment Fund for Education)</p><p class="award-year">August 2021</p></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner reveal">
+    <div class="section-header">
+      <p class="section-label">09 / Contact</p>
+      <h2 class="section-title">Let's <em>create</em><br>something together</h2>
+      <div class="section-divider"></div>
+    </div>
+    <p class="contact-text" style="margin-top:2rem;">Open to full-time opportunities in business consulting, digital marketing, growth, and content strategy.</p>
+    <div class="contact-channels">
+      <a href="mailto:hendi.np@gmail.com" class="contact-item">
+        <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg></span>
+        <span class="contact-label">Email</span>
+        <span class="contact-value">hendi.np@gmail.com</span>
+      </a>
+      <a href="https://www.instagram.com/handynpt/" target="_blank" class="contact-item">
+        <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></span>
+        <span class="contact-label">Instagram</span>
+        <span class="contact-value">@handynpt</span>
+      </a>
+      <a href="https://www.linkedin.com/in/hendi-nur-p-b8572812b/" target="_blank" class="contact-item">
+        <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 11v6M7 7v.01M11 11v6m0-3.5c0-2 1.5-3 3-3s3 1 3 3V17"/></svg></span>
+        <span class="contact-label">LinkedIn</span>
+        <span class="contact-value">Hendi Nur Pratama</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer><p>&copy; 2026 Hendi Nur Pratama &middot; Built with care</p></footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 60); });
+
+  // ---- THEME TOGGLE ----
+  const themeToggle = document.getElementById('themeToggle');
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') document.body.classList.add('light-mode');
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+    localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+  });
+
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => { navLinks.classList.toggle('open'); });
+  navLinks.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => navLinks.classList.remove('open')); });
+
+  // ---- SCROLL SPY: highlight active nav link ----
+  const sections = document.querySelectorAll('section[id]');
+  const navItems = document.querySelectorAll('.nav-links a');
+
+  function updateActiveNav() {
+    const scrollPos = window.scrollY + window.innerHeight / 3;
+
+    let currentId = '';
+    sections.forEach(section => {
+      if (section.offsetTop <= scrollPos) {
+        currentId = section.getAttribute('id');
+      }
+    });
+
+    navItems.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + currentId) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  window.addEventListener('load', updateActiveNav);
+
+  // ---- MOBILE: replace video iframes with tap-to-open links ----
+  function isMobile() {
+    return window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  }
+
+  function swapVideoIframes() {
+    if (!isMobile()) return;
+    document.querySelectorAll('.video-wrapper iframe').forEach(iframe => {
+      const src = iframe.getAttribute('src') || '';
+      const match = src.match(/\/file\/d\/([^/]+)\//);
+      if (!match) return;
+      const fileId = match[1];
+      const viewUrl = 'https://drive.google.com/file/d/' + fileId + '/view';
+
+      const thumbUrl = 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w600';
+
+      const link = document.createElement('a');
+      link.href = viewUrl;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.className = 'mobile-video-link';
+      link.style.backgroundImage = 'url(' + thumbUrl + ')';
+      link.style.backgroundSize = 'cover';
+      link.style.backgroundPosition = 'center';
+      link.innerHTML = '<div class="play-icon"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,3 20,12 6,21"/></svg></div><span class="tap-label">Tap to play</span>';
+
+      iframe.replaceWith(link);
+    });
+  }
+
+  swapVideoIframes();
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  class TimelineAnimator {
+    constructor(container) {
+      this.container = container;
+      this.progressBar = container.querySelector('.timeline-progress');
+      this.items = container.querySelectorAll('.edu-item, .exp-item');
+      this.currentHeight = 0; this.targetHeight = 0; this.lerpFactor = 0.08; this.isAnimating = false;
+    }
+    getTargetHeight() {
+      const rect = this.container.getBoundingClientRect();
+      const triggerOffset = window.innerHeight * 0.65;
+      const scrolled = triggerOffset - rect.top;
+      if (scrolled <= 0) return 0;
+      if (scrolled >= rect.height) return 100;
+      return (scrolled / rect.height) * 100;
+    }
+    updateDots(progressPercent) {
+      const containerRect = this.container.getBoundingClientRect();
+      const containerTop = containerRect.top + window.scrollY;
+      const progressPx = (progressPercent / 100) * containerRect.height;
+      this.items.forEach(item => {
+        const dot = item.querySelector('.timeline-dot');
+        if (!dot) return;
+        const dotPos = (dot.getBoundingClientRect().top + window.scrollY) - containerTop;
+        item.classList.toggle('reached', progressPx >= dotPos);
+      });
+    }
+    animate() {
+      this.targetHeight = this.getTargetHeight();
+      const diff = this.targetHeight - this.currentHeight;
+      this.currentHeight += diff * this.lerpFactor;
+      if (Math.abs(diff) < 0.05) this.currentHeight = this.targetHeight;
+      this.progressBar.style.height = this.currentHeight + '%';
+      this.updateDots(this.currentHeight);
+      if (Math.abs(diff) > 0.01) { requestAnimationFrame(() => this.animate()); } else { this.isAnimating = false; }
+    }
+    kick() { if (!this.isAnimating) { this.isAnimating = true; requestAnimationFrame(() => this.animate()); } }
+  }
+
+  const timelines = [];
+  document.querySelectorAll('[data-timeline]').forEach(el => { timelines.push(new TimelineAnimator(el)); });
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(() => { timelines.forEach(t => t.kick()); ticking = false; }); }
+  }, { passive: true });
+  window.addEventListener('load', () => { timelines.forEach(t => t.kick()); });
+
+  // ---- COUNT-UP ANIMATION ----
+  function animateCount(el) {
+    if (el.dataset.counted) return;
+    el.dataset.counted = 'true';
+
+    const target = parseFloat(el.dataset.count);
+    const decimals = parseInt(el.dataset.decimals) || 0;
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const duration = 2000;
+    const startTime = performance.now();
+
+    function easeOutExpo(t) {
+      return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    }
+
+    function update(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = easeOutExpo(progress);
+      const current = eased * target;
+
+      el.textContent = prefix + current.toFixed(decimals).replace(/\.00$/, '') + suffix;
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        el.textContent = prefix + target.toFixed(decimals).replace(/\.00$/, '') + suffix;
+      }
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.result-number[data-count]').forEach(el => animateCount(el));
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.results-grid, .result-card').forEach(el => countObserver.observe(el));
+</script>
+</body>
+</html>
